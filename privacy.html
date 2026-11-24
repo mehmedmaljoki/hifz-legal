@@ -35,7 +35,7 @@
   <body>
     <h1>Privacy Policy – Quranio</h1>
     <p>
-      <em>Last updated: 22 October 2026 · <a href="#de">Deutsche Version unten</a></em>
+      <em>Last updated: 20 November 2026 · <a href="#de">Deutsche Version unten</a></em>
     </p>
 
     <h2>Summary</h2>
@@ -68,6 +68,24 @@
       account data is sent.
     </p>
 
+    <h2>Explanations of recitation findings (optional, off by default)</h2>
+    <p>
+      When the app notices something in your recitation, it can explain it. The short explanation is
+      written on your device and works offline. Only if you switch on “Detailed explanations online”
+      does the app send the structured finding to our server: the reference of the āyah and its
+      standard Qur'an text, the word, the tajweed rule, the expected and the measured length, how
+      sure the app is and which part of the app produced the finding. Our server (hosted on
+      Cloudflare Workers) passes this to Claude, an AI model by Anthropic, which words the
+      explanation, and returns it to you. Your recording never leaves the device, and no name,
+      account, contact or device identifier is sent. To limit misuse, the request carries a random
+      key created when you switch the option on (deleted when you switch it off) and our server sees
+      your IP address; neither is passed to Anthropic. Our server keeps no content of the request;
+      its logs hold only the status, the time and the number of tokens used. Anthropic processes the
+      request under its commercial terms (<a href="https://www.anthropic.com/legal/privacy"
+        >privacy policy</a
+      >). You can switch the option off at any time; the legal basis is your consent.
+    </p>
+
     <h2>Notifications</h2>
     <p>Reminders are scheduled locally on your device. No push-notification server is used.</p>
 
@@ -88,12 +106,12 @@
     </p>
 
     <h2>Contact</h2>
-    <p>Mehmed Maljoki · <a href="mailto:maljoki.mehmed@gmail.com">maljoki.mehmed@gmail.com</a></p>
+    <p>Mehmed Maljoki · <a href="mailto:quranio.app@gmail.com">quranio.app@gmail.com</a></p>
 
     <hr />
 
     <h1 id="de">Datenschutzerklärung – Quranio</h1>
-    <p><em>Stand: 22. Oktober 2026</em></p>
+    <p><em>Stand: 20. November 2026</em></p>
 
     <h2>Kurzfassung</h2>
     <p>
@@ -126,6 +144,26 @@
       werden keine Kontodaten übermittelt.
     </p>
 
+    <h2>Erklärungen zu Befunden der Rezitation (optional, standardmäßig aus)</h2>
+    <p>
+      Wenn die App in deiner Rezitation etwas bemerkt, kann sie es erklären. Die kurze Erklärung
+      entsteht auf deinem Gerät und funktioniert offline. Nur wenn du „Ausführliche Erklärungen
+      online“ einschaltest, sendet die App den strukturierten Befund an unseren Server: die Angabe
+      des Verses und seinen Standard-Korantext, das Wort, die Tajwīd-Regel, die erwartete und die
+      gemessene Länge, wie sicher sich die App ist und welcher Teil der App den Befund erzeugt hat.
+      Unser Server (betrieben auf Cloudflare Workers) gibt dies an Claude weiter, ein KI-Modell von
+      Anthropic, das die Erklärung formuliert, und schickt sie dir zurück. Deine Aufnahme verlässt
+      das Gerät nie; Name, Konto, Kontakte oder Gerätekennungen werden nicht gesendet. Gegen
+      Missbrauch trägt die Anfrage einen zufälligen Schlüssel, der beim Einschalten erzeugt und beim
+      Ausschalten gelöscht wird, und unser Server sieht deine IP-Adresse; beides wird nicht an
+      Anthropic weitergegeben. Unser Server speichert keine Inhalte der Anfrage; seine Protokolle
+      enthalten nur Status, Zeitpunkt und Anzahl der verbrauchten Tokens. Anthropic verarbeitet die
+      Anfrage nach seinen geschäftlichen Bedingungen (<a
+        href="https://www.anthropic.com/legal/privacy"
+        >Datenschutz</a
+      >). Du kannst die Option jederzeit ausschalten; Rechtsgrundlage ist deine Einwilligung.
+    </p>
+
     <h2>Benachrichtigungen</h2>
     <p>Erinnerungen werden lokal auf deinem Gerät geplant. Es wird kein Push-Server verwendet.</p>
 
@@ -147,6 +185,6 @@
     </p>
 
     <h2>Kontakt</h2>
-    <p>Mehmed Maljoki · <a href="mailto:maljoki.mehmed@gmail.com">maljoki.mehmed@gmail.com</a></p>
+    <p>Mehmed Maljoki · <a href="mailto:quranio.app@gmail.com">quranio.app@gmail.com</a></p>
   </body>
 </html>
