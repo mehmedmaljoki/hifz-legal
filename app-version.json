@@ -1,0 +1,10 @@
+{
+  "ios": {
+    "latest": "4.0.1",
+    "storeUrl": "https://apps.apple.com/app/id6779358433"
+  },
+  "android": {
+    "latest": "4.0.1",
+    "storeUrl": "https://play.google.com/store/apps/details?id=ai.ijaza.app"
+  }
+}
