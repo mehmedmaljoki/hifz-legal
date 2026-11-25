@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Quranio: Mushaf &amp; Hifz</title>
+    <meta name="robots" content="noindex" />
+    <meta
+      name="description"
+      content="A calm Qur'an memorization app. A full Mushaf, spaced-repetition review and a daily plan that tells you what to learn and what to revise today. For iPhone, iPad and Android."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Quranio: Mushaf &amp; Hifz" />
+    <meta
+      property="og:description"
+      content="Know what to learn today and what to review. A calm hifz companion with a full Mushaf, spaced repetition and no points or leaderboards."
+    />
+    <meta name="theme-color" content="#F7F3EA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1512" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Smart link: sends iPhone/iPad users to the App Store and Android users to Google Play.
+     Everyone else (desktop) sees both store links. Share this one URL everywhere. -->
+    <script>
+      (function () {
+        var IOS = 'https://apps.apple.com/at/app/quranio-mushaf-hifz/id6779358433';
+        var ANDROID = 'https://play.google.com/store/apps/details?id=ai.ijaza.app';
+        var ua = navigator.userAgent || '';
+        var isIOS =
+          /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); // iPadOS reports a Mac UA
+        var isAndroid = /Android/.test(ua);
+        if (isIOS) location.replace(IOS);
+        else if (isAndroid) location.replace(ANDROID);
+      })();
+    </script>
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --sunken: #eee8da;
+        --card: #fffdf8;
+        --warm: #faf4e7;
+        --ink: #1a1a1a;
+        --muted: #5f594d;
+        --faint: #a39b8a;
+        --teal: #1b4f5a;
+        --on-teal: #f4efe2;
+        --accent: #1b4f5a;
+        --gold: #c9a84c;
+        --gold-text: #7e6620;
+        --line: rgba(40, 30, 12, 0.12);
+        --pattern: rgba(27, 79, 90, 0.07);
+        --shadow: 0 30px 60px -28px rgba(40, 30, 12, 0.35), 0 8px 18px -10px rgba(40, 30, 12, 0.18);
+        --serif:
+          'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia,
+          'Times New Roman', serif;
+        --sans:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        --arabic:
+          'Geeza Pro', 'Noto Naskh Arabic', 'Noto Sans Arabic', 'Traditional Arabic',
+          'Arabic Typesetting', serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1512;
+          --sunken: #0a100d;
+          --card: #161f1b;
+          --warm: #1a2420;
+          --ink: #f0ede8;
+          --muted: #a7b1af;
+          --faint: #67726f;
+          --teal: #2c6b79;
+          --on-teal: #f4efe2;
+          --accent: #6fb0be;
+          --gold: #c9a84c;
+          --gold-text: #d8bc66;
+          --line: rgba(240, 237, 232, 0.12);
+          --pattern: rgba(216, 188, 102, 0.06);
+          --shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.8), 0 8px 18px -10px rgba(0, 0, 0, 0.5);
+        }
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 17px/1.55 var(--sans);
+        overflow-x: hidden;
+      }
+      a {
+        color: var(--accent);
+      }
+      a:focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 3px;
+        border-radius: 14px;
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .skip {
+        position: absolute;
+        left: -9999px;
+      }
+      .skip:focus {
+        left: 16px;
+        top: 16px;
+        z-index: 9;
+        background: var(--card);
+        padding: 10px 14px;
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        isolation: isolate;
+        padding: 56px 0 72px;
+        border-bottom: 1px solid var(--line);
+      }
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: var(--pattern);
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M12 12h24v24H12z'/%3E%3Cpath d='M24 7l17 17-17 17L7 24z'/%3E%3Ccircle cx='24' cy='24' r='5'/%3E%3Cpath d='M0 0l7 7M48 0l-7 7M0 48l7-7M48 48l-7-7'/%3E%3C/g%3E%3C/svg%3E")
+          0 0 / 48px 48px;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23000' stroke-width='1'%3E%3Cpath d='M12 12h24v24H12z'/%3E%3Cpath d='M24 7l17 17-17 17L7 24z'/%3E%3Ccircle cx='24' cy='24' r='5'/%3E%3Cpath d='M0 0l7 7M48 0l-7 7M0 48l7-7M48 48l-7-7'/%3E%3C/g%3E%3C/svg%3E")
+          0 0 / 48px 48px;
+      }
+      .hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(ellipse 70% 60% at 30% 45%, var(--bg) 35%, transparent 80%);
+      }
+      .hero-grid {
+        display: grid;
+        gap: 48px;
+        align-items: center;
+      }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0 0 18px;
+        color: var(--gold-text);
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .eyebrow::after {
+        content: '';
+        flex: 0 0 56px;
+        height: 1px;
+        background: var(--gold);
+      }
+      .ar {
+        font-family: var(--arabic);
+        letter-spacing: 0;
+        text-transform: none;
+        font-size: 20px;
+        font-weight: 400;
+      }
+      h1 {
+        margin: 0;
+        font: 400 clamp(52px, 13vw, 92px) / 0.95 var(--serif);
+        letter-spacing: -0.02em;
+      }
+      h1 span {
+        display: block;
+        margin-top: 14px;
+        font-size: 0.32em;
+        letter-spacing: 0.01em;
+        color: var(--accent);
+        font-style: italic;
+      }
+      .promise {
+        margin: 24px 0 32px;
+        max-width: 30em;
+        font-size: clamp(18px, 2.4vw, 21px);
+        color: var(--muted);
+      }
+      .promise strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .stores {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .store {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 56px;
+        min-width: 200px;
+        padding: 9px 22px 9px 16px;
+        border-radius: 14px;
+        background: var(--teal);
+        color: var(--on-teal);
+        text-decoration: none;
+        box-shadow: 0 10px 22px -14px rgba(27, 79, 90, 0.9);
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+      .store.alt {
+        background: var(--card);
+        color: var(--ink);
+        box-shadow:
+          inset 0 0 0 1px var(--line),
+          0 10px 22px -16px rgba(40, 30, 12, 0.5);
+      }
+      .store:hover {
+        transform: translateY(-2px);
+      }
+      .store svg {
+        flex: none;
+        width: 26px;
+        height: 26px;
+      }
+      .store small {
+        display: block;
+        font-size: 12px;
+        line-height: 1.2;
+        opacity: 0.85;
+      }
+      .store b {
+        display: block;
+        font-size: 19px;
+        line-height: 1.2;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .note {
+        margin: 18px 0 0;
+        font-size: 14px;
+        color: var(--muted);
+      }
+
+      /* Phone */
+      .phone-col {
+        display: flex;
+        justify-content: center;
+      }
+      .phone {
+        position: relative;
+        width: min(300px, 82vw);
+        aspect-ratio: 9 / 19;
+        padding: 12px;
+        border-radius: 46px;
+        background: #12181a;
+        box-shadow:
+          var(--shadow),
+          inset 0 0 0 2px #2a3335;
+        transform: rotate(-2deg);
+      }
+      .screen {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 36px;
+        background: #f7f3ea;
+        color: #1a1a1a;
+        padding: 46px 16px 16px;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+      @media (prefers-color-scheme: dark) {
+        .screen {
+          background: #0e1512;
+          color: #f0ede8;
+        }
+      }
+      .screen::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        width: 84px;
+        height: 24px;
+        margin-left: -42px;
+        border-radius: 14px;
+        background: #12181a;
+      }
+      .s-ar {
+        font-family: var(--arabic);
+        font-size: 15px;
+        color: var(--gold-text);
+      }
+      .s-title {
+        margin: 2px 0 12px;
+        font: 600 22px/1.15 var(--serif);
+      }
+      .week {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .week i {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid var(--line);
+      }
+      .week i.d {
+        border-color: var(--teal) var(--teal) var(--gold) var(--gold);
+      }
+      .week i.t {
+        border-color: var(--teal) var(--teal) var(--line) var(--line);
+        box-shadow:
+          0 0 0 2px var(--bg),
+          0 0 0 3px var(--gold);
+      }
+      .s-hero {
+        border-radius: 18px;
+        padding: 14px;
+        background: var(--teal);
+        color: var(--on-teal);
+      }
+      .s-hero p {
+        margin: 0;
+        opacity: 0.85;
+      }
+      .s-hero strong {
+        display: block;
+        margin: 2px 0 10px;
+        font: 600 17px/1.2 var(--serif);
+      }
+      .s-btn {
+        display: block;
+        text-align: center;
+        padding: 7px;
+        border-radius: 10px;
+        background: var(--on-teal);
+        color: #1b4f5a;
+        font-weight: 600;
+      }
+      .s-label {
+        margin: 14px 0 6px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        margin-bottom: 6px;
+        border-radius: 12px;
+        background: var(--card);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+      .step em {
+        font-style: normal;
+        color: var(--muted);
+        margin-left: auto;
+      }
+      .dot {
+        flex: none;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+      .dot.t {
+        background: var(--teal);
+      }
+      .page {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 12px;
+        background: var(--warm);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+      .page span {
+        display: block;
+        height: 5px;
+        margin: 7px 0;
+        border-radius: 3px;
+        background: var(--faint);
+        opacity: 0.45;
+      }
+      .page span:nth-child(2) {
+        background: var(--teal);
+        opacity: 0.6;
+        width: 82%;
+        margin-left: auto;
+      }
+      .page span:nth-child(4) {
+        width: 64%;
+        margin-left: auto;
+      }
+
+      /* Sections */
+      section {
+        padding: 72px 0;
+      }
+      h2 {
+        margin: 0 0 12px;
+        font: 400 clamp(30px, 5vw, 42px) / 1.1 var(--serif);
+        letter-spacing: -0.01em;
+      }
+      .lead {
+        margin: 0 0 40px;
+        max-width: 34em;
+        color: var(--muted);
+      }
+      .features {
+        display: grid;
+        gap: 16px;
+      }
+      .feature {
+        padding: 26px 24px;
+        border-radius: 20px;
+        background: var(--card);
+        box-shadow: inset 0 0 0 1px var(--line);
+      }
+      .feature svg {
+        width: 34px;
+        height: 34px;
+        color: var(--accent);
+      }
+      h3 {
+        margin: 14px 0 8px;
+        font: 600 21px/1.25 var(--serif);
+      }
+      .feature p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .also {
+        margin: 28px 0 0;
+        padding: 18px 0 0;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .how {
+        background: var(--sunken);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+      ol.steps {
+        display: grid;
+        gap: 28px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: s;
+      }
+      ol.steps li {
+        counter-increment: s;
+        position: relative;
+        padding-top: 54px;
+      }
+      ol.steps li::before {
+        content: counter(s);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        border: 1px solid var(--gold);
+        color: var(--gold-text);
+        font: 400 19px/1 var(--serif);
+      }
+      ol.steps h3 {
+        margin-top: 0;
+      }
+      ol.steps p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .cta {
+        text-align: center;
+      }
+      .cta .lead {
+        margin: 0 auto 32px;
+      }
+      .cta .stores {
+        justify-content: center;
+      }
+      .rule {
+        display: block;
+        width: 72px;
+        height: 1px;
+        margin: 0 auto 28px;
+        background: var(--gold);
+      }
+      footer {
+        padding: 28px 0 40px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+      footer .wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 24px;
+        justify-content: space-between;
+      }
+      footer a {
+        display: inline-block;
+        padding: 12px 0;
+        margin: -12px 0;
+      }
+
+      @media (min-width: 720px) {
+        .features {
+          grid-template-columns: 1fr 1fr;
+        }
+        ol.steps {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (min-width: 900px) {
+        .hero {
+          padding: 88px 0 96px;
+        }
+        .hero-grid {
+          grid-template-columns: 1.15fr 0.85fr;
+        }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .rise {
+          animation: rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        }
+        .rise.d2 {
+          animation-delay: 0.12s;
+        }
+        @keyframes rise {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .store {
+          transition: none;
+        }
+        .store:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <rect
+          x="6"
+          y="2.5"
+          width="12"
+          height="19"
+          rx="3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-tablet" viewBox="0 0 24 24">
+        <rect
+          x="4"
+          y="2.5"
+          width="16"
+          height="19"
+          rx="2.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <path
+          d="M12 9v6m-3-3 3 3 3-3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+    </svg>
+
+    <main id="main">
+      <header class="hero">
+        <div class="wrap hero-grid">
+          <div class="rise">
+            <p class="eyebrow">
+              <span>Hifz companion</span>
+              <span class="ar" dir="rtl" lang="ar">حفظ القرآن</span>
+            </p>
+            <h1>Quranio <span>Mushaf &amp; Hifz</span></h1>
+            <p class="promise">
+              <strong>Know what to learn today and what to review.</strong> A calm place to memorize
+              the Qur'an and keep what you have learned, with a full Mushaf beside it. No points, no
+              leaderboards.
+            </p>
+            <div class="stores">
+              <a
+                class="store"
+                href="https://apps.apple.com/at/app/quranio-mushaf-hifz/id6779358433"
+              >
+                <svg aria-hidden="true"><use href="#i-phone" /></svg>
+                <span><small>Download on the</small><b>App Store</b></span>
+              </a>
+              <a
+                class="store alt"
+                href="https://play.google.com/store/apps/details?id=ai.ijaza.app"
+              >
+                <svg aria-hidden="true"><use href="#i-tablet" /></svg>
+                <span><small>Get it on</small><b>Google Play</b></span>
+              </a>
+            </div>
+            <p class="note">For iPhone, iPad and Android. Free to download, no account needed.</p>
+          </div>
+
+          <div class="phone-col rise d2" aria-hidden="true">
+            <div class="phone">
+              <div class="screen">
+                <div class="s-ar" dir="rtl" lang="ar">القرآن</div>
+                <div class="s-title">Today</div>
+                <div class="week">
+                  <i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i
+                  ><i class="t"></i><i></i><i></i>
+                </div>
+                <div class="s-hero">
+                  <p>Review · 3 blocks · ~18 min</p>
+                  <strong>Al-Mulk 1–15</strong>
+                  <span class="s-btn">Start review</span>
+                </div>
+                <div class="s-label">Your day</div>
+                <div class="step">
+                  <span class="dot t"></span>Learn · Al-Mulk 16–20<em>12 min</em>
+                </div>
+                <div class="step"><span class="dot"></span>Revision · Juz 29<em>9 min</em></div>
+                <div class="step"><span class="dot"></span>Recent · An-Naba<em>6 min</em></div>
+                <div class="page">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section aria-labelledby="f-h">
+        <div class="wrap">
+          <h2 id="f-h">Everything hifz asks of you, in one quiet place</h2>
+          <p class="lead">
+            Quranio is a tool for your own study. It does not replace a teacher; it helps you arrive
+            prepared.
+          </p>
+          <div class="features">
+            <article class="feature">
+              <svg
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="5" y="6" width="22" height="21" rx="3" />
+                <path d="M5 12h22M11 3.5v5M21 3.5v5M11 18l3 3 6-6" />
+              </svg>
+              <h3>A plan for today</h3>
+              <p>
+                Choose your minutes. Each day brings one block of new material and the passages that
+                are due, scheduled āyah by āyah with spaced repetition (FSRS).
+              </p>
+            </article>
+            <article class="feature">
+              <svg
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M16 8c-3-2.5-7-3-11-2v19c4-1 8-.5 11 2 3-2.5 7-3 11-2V6c-4-1-8-.5-11 2zM16 8v19"
+                />
+              </svg>
+              <h3>The full Mushaf</h3>
+              <p>
+                The complete Ḥafṣ text on the printed 15-line page or as flowing text, with tajweed
+                colours, translations and tafsīr.
+              </p>
+            </article>
+            <article class="feature">
+              <svg
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M6 19v-3a10 10 0 0 1 20 0v3" />
+                <rect x="4" y="18" width="6" height="9" rx="2" />
+                <rect x="22" y="18" width="6" height="9" rx="2" />
+              </svg>
+              <h3>Listen and repeat</h3>
+              <p>
+                Choose from many reciters, loop an āyah or a range, and follow each word as it is
+                recited.
+              </p>
+            </article>
+            <article class="feature">
+              <svg
+                viewBox="0 0 32 32"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="16" cy="16" r="11" />
+                <path d="M16 5a11 11 0 0 1 11 11H16z" />
+              </svg>
+              <h3>Test yourself, honestly</h3>
+              <p>
+                Exam mode starts from the first words of an āyah you know. A quiz trains the
+                look-alike āyāt (mutashābihāt). A juz map shows what is firm and what needs care.
+              </p>
+            </article>
+          </div>
+          <p class="also">
+            Also: works offline once set up · your data stays on your device · backup and restore to
+            a file · the core features are free.
+          </p>
+        </div>
+      </section>
+
+      <section class="how" aria-labelledby="h-h">
+        <div class="wrap">
+          <h2 id="h-h">How it works</h2>
+          <p class="lead">A few questions at the start, then one clear next step every day.</p>
+          <ol class="steps">
+            <li>
+              <h3>Tell it where you are</h3>
+              <p>Start from the beginning, from Juz ʿAmma, or mark the sūrahs you already know.</p>
+            </li>
+            <li>
+              <h3>Give it your minutes</h3>
+              <p>
+                Set the time you have each day. The plan fits new learning and review inside it.
+              </p>
+            </li>
+            <li>
+              <h3>Recite, then rate</h3>
+              <p>
+                Reveal the text, mark where you stumbled. Each rating shapes what returns, and when.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="cta" aria-labelledby="c-h">
+        <div class="wrap">
+          <span class="rule" aria-hidden="true"></span>
+          <h2 id="c-h">Begin with today</h2>
+          <p class="lead">Free on iPhone, iPad and Android.</p>
+          <div class="stores">
+            <a class="store" href="https://apps.apple.com/at/app/quranio-mushaf-hifz/id6779358433">
+              <svg aria-hidden="true"><use href="#i-phone" /></svg>
+              <span><small>Download on the</small><b>App Store</b></span>
+            </a>
+            <a class="store alt" href="https://play.google.com/store/apps/details?id=ai.ijaza.app">
+              <svg aria-hidden="true"><use href="#i-tablet" /></svg>
+              <span><small>Get it on</small><b>Google Play</b></span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>© Quranio</span>
+        <a href="https://mehmedmaljoki.github.io/hifz-legal/">Privacy</a>
+      </div>
+    </footer>
+  </body>
+</html>
